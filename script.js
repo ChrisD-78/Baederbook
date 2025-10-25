@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Add parallax effect to hero section and rotate floating cards on scroll
-window.addEventListener('scroll', () => {
+function updateFloatingCards() {
     const scrolled = window.pageYOffset;
     const heroImage = document.querySelector('.hero-image');
     const floatingCards = document.querySelectorAll('.floating-card');
@@ -93,7 +93,70 @@ window.addEventListener('scroll', () => {
         card.style.transform = `translate(-50%, -50%) translateY(${floatOffset}px)`;
         card.style.transition = 'all 0.1s ease-out';
     });
+}
+
+// Add scroll event listener
+window.addEventListener('scroll', updateFloatingCards);
+
+// Add touch event listeners for mobile devices
+let touchStartY = 0;
+let touchCurrentY = 0;
+
+window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+    touchCurrentY = e.touches[0].clientY;
+    // Trigger animation on touch move
+    updateFloatingCards();
+}, { passive: true });
+
+// Add continuous rotation for mobile when not scrolling
+let continuousRotation = 0;
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener('scroll', () => {
+    isScrolling = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 150);
 });
+
+// Continuous rotation animation for mobile
+function animateFloatingCards() {
+    if (!isScrolling) {
+        continuousRotation += 0.5; // Slow continuous rotation
+        const floatingCards = document.querySelectorAll('.floating-card');
+        
+        // Ellipse parameters
+        const centerX = 50;
+        const centerY = 50;
+        const radiusX = 35;
+        const radiusY = 20;
+        
+        floatingCards.forEach((card, index) => {
+            const baseAngle = (index * 60) * (Math.PI / 180);
+            const totalAngle = baseAngle + (continuousRotation * Math.PI / 180);
+            
+            const x = centerX + radiusX * Math.cos(totalAngle);
+            const y = centerY + radiusY * Math.sin(totalAngle);
+            
+            const floatOffset = Math.sin(Date.now() * 0.002 + index) * 3;
+            card.style.left = `${x}%`;
+            card.style.top = `${y}%`;
+            card.style.transform = `translate(-50%, -50%) translateY(${floatOffset}px)`;
+            card.style.transition = 'all 0.3s ease-out';
+        });
+    }
+    
+    requestAnimationFrame(animateFloatingCards);
+}
+
+// Start continuous animation
+animateFloatingCards();
 
 // Interactive button hover effects
 document.querySelectorAll('.btn').forEach(button => {

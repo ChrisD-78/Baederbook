@@ -1175,3 +1175,20 @@ body {
     text-align: center;
 }
 
+/* Mobile floating card optimizations */
+@media (max-width: 768px) {
+    .floating-card {
+        will-change: transform, left, top;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        /* Ensure smooth animations on mobile */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
+    /* Reduce animation complexity on mobile for better performance */
+    .floating-card {
+        transition: all 0.2s ease-out;
+    }
+}
+
