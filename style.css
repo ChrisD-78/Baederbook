@@ -1187,33 +1187,7 @@ body {
         /* Force hardware acceleration */
         -webkit-perspective: 1000px;
         perspective: 1000px;
+        transition: all 0.3s ease-out;
     }
-    
-    /* Reduce animation complexity on mobile for better performance */
-    .floating-card {
-        transition: all 0.2s ease-out;
-    }
-    
-    /* CSS-based rotation animation as fallback for mobile */
-    @keyframes mobileFloat {
-        0% { transform: translate(-50%, -50%) rotate(0deg) translateY(0px); }
-        25% { transform: translate(-50%, -50%) rotate(90deg) translateY(-2px); }
-        50% { transform: translate(-50%, -50%) rotate(180deg) translateY(0px); }
-        75% { transform: translate(-50%, -50%) rotate(270deg) translateY(2px); }
-        100% { transform: translate(-50%, -50%) rotate(360deg) translateY(0px); }
-    }
-    
-    /* Apply CSS animation to floating cards on mobile */
-    .floating-card {
-        animation: mobileFloat 20s linear infinite;
-    }
-    
-    /* Stagger the animation for each card */
-    .floating-card:nth-child(1) { animation-delay: 0s; }
-    .floating-card:nth-child(2) { animation-delay: 3.33s; }
-    .floating-card:nth-child(3) { animation-delay: 6.66s; }
-    .floating-card:nth-child(4) { animation-delay: 10s; }
-    .floating-card:nth-child(5) { animation-delay: 13.33s; }
-    .floating-card:nth-child(6) { animation-delay: 16.66s; }
 }
 

@@ -98,81 +98,57 @@ function updateFloatingCards() {
 // Add scroll event listener
 window.addEventListener('scroll', updateFloatingCards);
 
-// Mobile device detection
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-
-// Mobile-specific floating card animation
-let mobileRotation = 0;
-let animationId;
-
-function animateMobileCards() {
+// Simple mobile rotation - force animation on all mobile devices
+function startMobileAnimation() {
     const floatingCards = document.querySelectorAll('.floating-card');
-    
     if (floatingCards.length === 0) return;
     
-    // Continuous slow rotation for mobile
-    mobileRotation += 0.3; // Even slower rotation
+    let rotation = 0;
     
-    // Ellipse parameters
-    const centerX = 50;
-    const centerY = 50;
-    const radiusX = 35;
-    const radiusY = 20;
-    
-    floatingCards.forEach((card, index) => {
-        const baseAngle = (index * 60) * (Math.PI / 180);
-        const totalAngle = baseAngle + (mobileRotation * Math.PI / 180);
+    function animate() {
+        rotation += 0.5;
         
-        const x = centerX + radiusX * Math.cos(totalAngle);
-        const y = centerY + radiusY * Math.sin(totalAngle);
+        // Ellipse parameters
+        const centerX = 50;
+        const centerY = 50;
+        const radiusX = 35;
+        const radiusY = 20;
         
-        // Subtle floating effect
-        const floatOffset = Math.sin(Date.now() * 0.001 + index) * 2;
+        floatingCards.forEach((card, index) => {
+            const baseAngle = (index * 60) * (Math.PI / 180);
+            const totalAngle = baseAngle + (rotation * Math.PI / 180);
+            
+            const x = centerX + radiusX * Math.cos(totalAngle);
+            const y = centerY + radiusY * Math.sin(totalAngle);
+            
+            card.style.left = `${x}%`;
+            card.style.top = `${y}%`;
+            card.style.transform = `translate(-50%, -50%)`;
+            card.style.transition = 'all 0.3s ease-out';
+        });
         
-        card.style.left = `${x}%`;
-        card.style.top = `${y}%`;
-        card.style.transform = `translate(-50%, -50%) translateY(${floatOffset}px)`;
-        card.style.transition = 'all 0.4s ease-out';
-    });
-    
-    animationId = requestAnimationFrame(animateMobileCards);
-}
-
-// Initialize mobile animation
-if (isMobile) {
-    // Start animation after a short delay to ensure DOM is ready
-    setTimeout(() => {
-        animateMobileCards();
-    }, 500);
-}
-
-// Also trigger on scroll for mobile
-window.addEventListener('scroll', () => {
-    if (isMobile) {
-        updateFloatingCards();
+        requestAnimationFrame(animate);
     }
+    
+    animate();
+}
+
+// Start mobile animation immediately
+startMobileAnimation();
+
+// Also start animation when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        startMobileAnimation();
+    }, 100);
 });
 
-// Touch events for mobile
-if (isMobile) {
-    let touchStartY = 0;
-    let isTouching = false;
-    
-    window.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-        isTouching = true;
-    }, { passive: true });
-    
-    window.addEventListener('touchmove', (e) => {
-        if (isTouching) {
-            updateFloatingCards();
-        }
-    }, { passive: true });
-    
-    window.addEventListener('touchend', () => {
-        isTouching = false;
-    }, { passive: true });
-}
+// Start animation on window load as well
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        startMobileAnimation();
+    }, 200);
+});
 
 // Interactive button hover effects
 document.querySelectorAll('.btn').forEach(button => {
