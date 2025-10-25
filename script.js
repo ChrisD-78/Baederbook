@@ -98,65 +98,81 @@ function updateFloatingCards() {
 // Add scroll event listener
 window.addEventListener('scroll', updateFloatingCards);
 
-// Add touch event listeners for mobile devices
-let touchStartY = 0;
-let touchCurrentY = 0;
+// Mobile device detection
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 
-window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-}, { passive: true });
+// Mobile-specific floating card animation
+let mobileRotation = 0;
+let animationId;
 
-window.addEventListener('touchmove', (e) => {
-    touchCurrentY = e.touches[0].clientY;
-    // Trigger animation on touch move
-    updateFloatingCards();
-}, { passive: true });
-
-// Add continuous rotation for mobile when not scrolling
-let continuousRotation = 0;
-let isScrolling = false;
-let scrollTimeout;
-
-window.addEventListener('scroll', () => {
-    isScrolling = true;
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-        isScrolling = false;
-    }, 150);
-});
-
-// Continuous rotation animation for mobile
-function animateFloatingCards() {
-    if (!isScrolling) {
-        continuousRotation += 0.5; // Slow continuous rotation
-        const floatingCards = document.querySelectorAll('.floating-card');
-        
-        // Ellipse parameters
-        const centerX = 50;
-        const centerY = 50;
-        const radiusX = 35;
-        const radiusY = 20;
-        
-        floatingCards.forEach((card, index) => {
-            const baseAngle = (index * 60) * (Math.PI / 180);
-            const totalAngle = baseAngle + (continuousRotation * Math.PI / 180);
-            
-            const x = centerX + radiusX * Math.cos(totalAngle);
-            const y = centerY + radiusY * Math.sin(totalAngle);
-            
-            const floatOffset = Math.sin(Date.now() * 0.002 + index) * 3;
-            card.style.left = `${x}%`;
-            card.style.top = `${y}%`;
-            card.style.transform = `translate(-50%, -50%) translateY(${floatOffset}px)`;
-            card.style.transition = 'all 0.3s ease-out';
-        });
-    }
+function animateMobileCards() {
+    const floatingCards = document.querySelectorAll('.floating-card');
     
-    requestAnimationFrame(animateFloatingCards);
+    if (floatingCards.length === 0) return;
+    
+    // Continuous slow rotation for mobile
+    mobileRotation += 0.3; // Even slower rotation
+    
+    // Ellipse parameters
+    const centerX = 50;
+    const centerY = 50;
+    const radiusX = 35;
+    const radiusY = 20;
+    
+    floatingCards.forEach((card, index) => {
+        const baseAngle = (index * 60) * (Math.PI / 180);
+        const totalAngle = baseAngle + (mobileRotation * Math.PI / 180);
+        
+        const x = centerX + radiusX * Math.cos(totalAngle);
+        const y = centerY + radiusY * Math.sin(totalAngle);
+        
+        // Subtle floating effect
+        const floatOffset = Math.sin(Date.now() * 0.001 + index) * 2;
+        
+        card.style.left = `${x}%`;
+        card.style.top = `${y}%`;
+        card.style.transform = `translate(-50%, -50%) translateY(${floatOffset}px)`;
+        card.style.transition = 'all 0.4s ease-out';
+    });
+    
+    animationId = requestAnimationFrame(animateMobileCards);
 }
 
-// Start continuous animation
-animateFloatingCards();
+// Initialize mobile animation
+if (isMobile) {
+    // Start animation after a short delay to ensure DOM is ready
+    setTimeout(() => {
+        animateMobileCards();
+    }, 500);
+}
+
+// Also trigger on scroll for mobile
+window.addEventListener('scroll', () => {
+    if (isMobile) {
+        updateFloatingCards();
+    }
+});
+
+// Touch events for mobile
+if (isMobile) {
+    let touchStartY = 0;
+    let isTouching = false;
+    
+    window.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        isTouching = true;
+    }, { passive: true });
+    
+    window.addEventListener('touchmove', (e) => {
+        if (isTouching) {
+            updateFloatingCards();
+        }
+    }, { passive: true });
+    
+    window.addEventListener('touchend', () => {
+        isTouching = false;
+    }, { passive: true });
+}
 
 // Interactive button hover effects
 document.querySelectorAll('.btn').forEach(button => {
