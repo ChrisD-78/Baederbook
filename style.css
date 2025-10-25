@@ -1210,6 +1210,37 @@ body {
         margin-top: 4px;
     }
     
+    /* CSS-based circular positioning for mobile */
+    .floating-card.card-1 {
+        left: 80% !important;
+        top: 50% !important;
+    }
+    
+    .floating-card.card-2 {
+        left: 65% !important;
+        top: 30% !important;
+    }
+    
+    .floating-card.card-3 {
+        left: 35% !important;
+        top: 30% !important;
+    }
+    
+    .floating-card.card-4 {
+        left: 20% !important;
+        top: 50% !important;
+    }
+    
+    .floating-card.card-5 {
+        left: 35% !important;
+        top: 70% !important;
+    }
+    
+    .floating-card.card-6 {
+        left: 65% !important;
+        top: 70% !important;
+    }
+    
     /* Adjust circle radius for mobile */
     .hero-image {
         position: relative;
@@ -1232,6 +1263,37 @@ body {
     .floating-card p {
         font-size: 9px;
         margin-top: 2px;
+    }
+    
+    /* Even tighter circle for very small screens */
+    .floating-card.card-1 {
+        left: 75% !important;
+        top: 50% !important;
+    }
+    
+    .floating-card.card-2 {
+        left: 60% !important;
+        top: 35% !important;
+    }
+    
+    .floating-card.card-3 {
+        left: 40% !important;
+        top: 35% !important;
+    }
+    
+    .floating-card.card-4 {
+        left: 25% !important;
+        top: 50% !important;
+    }
+    
+    .floating-card.card-5 {
+        left: 40% !important;
+        top: 65% !important;
+    }
+    
+    .floating-card.card-6 {
+        left: 60% !important;
+        top: 65% !important;
     }
 }
 
