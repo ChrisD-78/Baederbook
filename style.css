@@ -1175,19 +1175,70 @@ body {
     text-align: center;
 }
 
-/* Mobile floating card optimizations */
+/* Mobile floating card animations */
+@keyframes mobileEllipse {
+    0% {
+        left: 85%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    16.66% {
+        left: 65%;
+        top: 30%;
+        transform: translate(-50%, -50%) rotate(60deg);
+    }
+    33.33% {
+        left: 50%;
+        top: 30%;
+        transform: translate(-50%, -50%) rotate(120deg);
+    }
+    50% {
+        left: 35%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+    66.66% {
+        left: 50%;
+        top: 70%;
+        transform: translate(-50%, -50%) rotate(240deg);
+    }
+    83.33% {
+        left: 65%;
+        top: 70%;
+        transform: translate(-50%, -50%) rotate(300deg);
+    }
+    100% {
+        left: 85%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Apply animation to all floating cards */
+.floating-card.mobile-animate {
+    animation: mobileEllipse 15s linear infinite;
+    will-change: transform, left, top;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
     .floating-card {
         will-change: transform, left, top;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
-        /* Ensure smooth animations on mobile */
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
-        /* Force hardware acceleration */
         -webkit-perspective: 1000px;
         perspective: 1000px;
-        transition: all 0.3s ease-out;
+    }
+    
+    /* Force animation on mobile */
+    .floating-card {
+        animation: mobileEllipse 15s linear infinite;
     }
 }
 

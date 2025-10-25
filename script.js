@@ -98,57 +98,25 @@ function updateFloatingCards() {
 // Add scroll event listener
 window.addEventListener('scroll', updateFloatingCards);
 
-// Simple mobile rotation - force animation on all mobile devices
-function startMobileAnimation() {
+// Force CSS animation on mobile devices
+function enableMobileAnimation() {
     const floatingCards = document.querySelectorAll('.floating-card');
-    if (floatingCards.length === 0) return;
     
-    let rotation = 0;
-    
-    function animate() {
-        rotation += 0.5;
+    floatingCards.forEach((card, index) => {
+        // Add mobile animation class
+        card.classList.add('mobile-animate');
         
-        // Ellipse parameters
-        const centerX = 50;
-        const centerY = 50;
-        const radiusX = 35;
-        const radiusY = 20;
-        
-        floatingCards.forEach((card, index) => {
-            const baseAngle = (index * 60) * (Math.PI / 180);
-            const totalAngle = baseAngle + (rotation * Math.PI / 180);
-            
-            const x = centerX + radiusX * Math.cos(totalAngle);
-            const y = centerY + radiusY * Math.sin(totalAngle);
-            
-            card.style.left = `${x}%`;
-            card.style.top = `${y}%`;
-            card.style.transform = `translate(-50%, -50%)`;
-            card.style.transition = 'all 0.3s ease-out';
-        });
-        
-        requestAnimationFrame(animate);
-    }
-    
-    animate();
+        // Set individual animation delay
+        card.style.animationDelay = `${index * 2}s`;
+    });
 }
 
-// Start mobile animation immediately
-startMobileAnimation();
+// Enable animation on all devices
+enableMobileAnimation();
 
-// Also start animation when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        startMobileAnimation();
-    }, 100);
-});
-
-// Start animation on window load as well
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        startMobileAnimation();
-    }, 200);
-});
+// Also enable when DOM is ready
+document.addEventListener('DOMContentLoaded', enableMobileAnimation);
+window.addEventListener('load', enableMobileAnimation);
 
 // Interactive button hover effects
 document.querySelectorAll('.btn').forEach(button => {
