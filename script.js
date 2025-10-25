@@ -63,7 +63,14 @@ function arrangeCardsInCircle() {
     // Circle parameters
     const centerX = 50; // 50% from left
     const centerY = 50; // 50% from top
-    const radius = 30; // Circle radius
+    
+    // Adjust radius based on screen size
+    let radius = 30; // Default radius
+    if (window.innerWidth <= 480) {
+        radius = 25; // Smaller radius for very small screens
+    } else if (window.innerWidth <= 768) {
+        radius = 28; // Medium radius for tablets
+    }
     
     // Position each card in a perfect circle
     floatingCards.forEach((card, index) => {
@@ -85,6 +92,9 @@ function arrangeCardsInCircle() {
 // Arrange cards when DOM is ready
 document.addEventListener('DOMContentLoaded', arrangeCardsInCircle);
 window.addEventListener('load', arrangeCardsInCircle);
+
+// Rearrange on window resize (for mobile rotation)
+window.addEventListener('resize', arrangeCardsInCircle);
 
 // Also arrange immediately
 arrangeCardsInCircle();

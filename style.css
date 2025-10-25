@@ -1193,6 +1193,45 @@ body {
         animation: none !important;
         transition: none !important;
         will-change: auto;
+        
+        /* Smaller cards for mobile */
+        width: 80px;
+        height: 80px;
+        padding: 12px;
+    }
+    
+    .floating-card svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .floating-card p {
+        font-size: 10px;
+        margin-top: 4px;
+    }
+    
+    /* Adjust circle radius for mobile */
+    .hero-image {
+        position: relative;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    .floating-card {
+        width: 70px;
+        height: 70px;
+        padding: 8px;
+    }
+    
+    .floating-card svg {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .floating-card p {
+        font-size: 9px;
+        margin-top: 2px;
     }
 }
 
