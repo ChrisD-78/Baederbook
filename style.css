@@ -1193,6 +1193,7 @@ body {
         animation: none !important;
         transition: none !important;
         will-change: auto;
+        position: absolute !important;
         
         /* Smaller cards for mobile */
         width: 80px;
@@ -1210,40 +1211,48 @@ body {
         margin-top: 4px;
     }
     
-    /* CSS-based circular positioning for mobile */
+    /* Force circular positioning for mobile - override JavaScript */
     .floating-card.card-1 {
         left: 80% !important;
         top: 50% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-2 {
         left: 65% !important;
         top: 30% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-3 {
         left: 35% !important;
         top: 30% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-4 {
         left: 20% !important;
         top: 50% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-5 {
         left: 35% !important;
         top: 70% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-6 {
         left: 65% !important;
         top: 70% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
-    /* Adjust circle radius for mobile */
+    /* Ensure hero-image is positioned */
     .hero-image {
         position: relative;
+        width: 100%;
+        height: 400px;
     }
 }
 
@@ -1253,6 +1262,7 @@ body {
         width: 70px;
         height: 70px;
         padding: 8px;
+        position: absolute !important;
     }
     
     .floating-card svg {
@@ -1269,31 +1279,37 @@ body {
     .floating-card.card-1 {
         left: 75% !important;
         top: 50% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-2 {
         left: 60% !important;
         top: 35% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-3 {
         left: 40% !important;
         top: 35% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-4 {
         left: 25% !important;
         top: 50% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-5 {
         left: 40% !important;
         top: 65% !important;
+        transform: translate(-50%, -50%) !important;
     }
     
     .floating-card.card-6 {
         left: 60% !important;
         top: 65% !important;
+        transform: translate(-50%, -50%) !important;
     }
 }
 
