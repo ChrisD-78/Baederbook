@@ -56,67 +56,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add parallax effect to hero section and rotate floating cards on scroll
-function updateFloatingCards() {
-    const scrolled = window.pageYOffset;
-    const heroImage = document.querySelector('.hero-image');
+// Static circular arrangement of floating cards
+function arrangeCardsInCircle() {
     const floatingCards = document.querySelectorAll('.floating-card');
     
-    if (heroImage && scrolled < window.innerHeight) {
-        heroImage.style.opacity = 1 - (scrolled / 800);
-    }
-    
-    // Calculate elliptical positions for all cards
-    const scrollProgress = Math.min(scrolled / (window.innerHeight * 0.8), 1);
-    const rotation = scrollProgress * 180; // Slower, more elegant rotation
-    
-    // Ellipse parameters
+    // Circle parameters
     const centerX = 50; // 50% from left
     const centerY = 50; // 50% from top
-    const radiusX = 35; // Horizontal radius
-    const radiusY = 20; // Vertical radius
+    const radius = 30; // Circle radius
     
-    // Position each card in ellipse and apply rotation
+    // Position each card in a perfect circle
     floatingCards.forEach((card, index) => {
         // Calculate angle for this card (6 cards = 60 degrees apart)
-        const baseAngle = (index * 60) * (Math.PI / 180); // Convert to radians
-        const totalAngle = baseAngle + (rotation * Math.PI / 180); // Add scroll rotation
+        const angle = (index * 60) * (Math.PI / 180); // Convert to radians
         
-        // Calculate elliptical position
-        const x = centerX + radiusX * Math.cos(totalAngle);
-        const y = centerY + radiusY * Math.sin(totalAngle);
+        // Calculate circular position
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
         
-        // Apply position and add subtle floating effect
-        const floatOffset = Math.sin(scrolled * 0.01 + index) * 3;
+        // Apply static position
         card.style.left = `${x}%`;
         card.style.top = `${y}%`;
-        card.style.transform = `translate(-50%, -50%) translateY(${floatOffset}px)`;
-        card.style.transition = 'all 0.1s ease-out';
+        card.style.transform = `translate(-50%, -50%)`;
+        card.style.transition = 'none'; // No animation
     });
 }
 
-// Add scroll event listener
-window.addEventListener('scroll', updateFloatingCards);
+// Arrange cards when DOM is ready
+document.addEventListener('DOMContentLoaded', arrangeCardsInCircle);
+window.addEventListener('load', arrangeCardsInCircle);
 
-// Force CSS animation on mobile devices
-function enableMobileAnimation() {
-    const floatingCards = document.querySelectorAll('.floating-card');
-    
-    floatingCards.forEach((card, index) => {
-        // Add mobile animation class
-        card.classList.add('mobile-animate');
-        
-        // Set individual animation delay
-        card.style.animationDelay = `${index * 2}s`;
-    });
-}
-
-// Enable animation on all devices
-enableMobileAnimation();
-
-// Also enable when DOM is ready
-document.addEventListener('DOMContentLoaded', enableMobileAnimation);
-window.addEventListener('load', enableMobileAnimation);
+// Also arrange immediately
+arrangeCardsInCircle();
 
 // Interactive button hover effects
 document.querySelectorAll('.btn').forEach(button => {
