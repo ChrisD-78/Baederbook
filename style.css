@@ -1145,6 +1145,169 @@ body {
     }
 }
 
+/* Cookie Modal specific styles */
+.cookie-modal .modal-content {
+    max-width: 600px;
+}
+
+.cookie-content {
+    margin-top: 20px;
+}
+
+.cookie-info-box {
+    background: rgba(147, 51, 234, 0.05);
+    border-left: 4px solid var(--primary-color);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.cookie-info-box p {
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.cookie-options {
+    margin: 24px 0;
+}
+
+.cookie-options h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-color);
+}
+
+.cookie-option {
+    margin-bottom: 16px;
+}
+
+/* Custom checkbox styling */
+.cookie-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 12px;
+    transition: var(--transition);
+}
+
+.cookie-checkbox:hover {
+    background: rgba(147, 51, 234, 0.05);
+}
+
+.cookie-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.cookie-checkbox .checkmark {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(147, 51, 234, 0.3);
+    border-radius: 6px;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.cookie-checkbox input[type="checkbox"]:checked + .checkmark {
+    background: var(--gradient-primary);
+    border-color: var(--primary-color);
+}
+
+.cookie-checkbox input[type="checkbox"]:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.cookie-checkbox input[type="checkbox"]:disabled + .checkmark {
+    background: rgba(147, 51, 234, 0.2);
+    border-color: rgba(147, 51, 234, 0.3);
+    cursor: not-allowed;
+}
+
+.cookie-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cookie-label strong {
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+.cookie-label small {
+    font-size: 13px;
+    opacity: 0.7;
+    color: var(--text-color);
+}
+
+/* Cookie action buttons */
+.cookie-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.cookie-actions .btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cookie-actions .btn-success {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.cookie-actions .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
+}
+
+.cookie-actions .btn-secondary {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--text-color);
+    border: 2px solid rgba(147, 51, 234, 0.2);
+}
+
+.cookie-actions .btn-secondary:hover {
+    background: rgba(147, 51, 234, 0.05);
+    border-color: var(--primary-color);
+}
+
+.cookie-actions .btn-minimal {
+    background: transparent;
+    color: var(--text-color);
+    border: 2px solid rgba(147, 51, 234, 0.1);
+    opacity: 0.8;
+}
+
+.cookie-actions .btn-minimal:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.02);
+}
+
 /* About Modal specific styles */
 #aboutModal .modal-content {
     max-width: 800px;

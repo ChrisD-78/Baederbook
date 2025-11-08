@@ -533,12 +533,86 @@ function initializeAboutModal() {
     });
 }
 
+// Cookie Modal functionality
+function initializeCookieModal() {
+    const modal = document.getElementById('cookieModal');
+    const closeBtn = modal.querySelector('.close');
+    const acceptAllBtn = document.getElementById('acceptAllCookies');
+    const saveSettingsBtn = document.getElementById('saveCookieSettings');
+    const rejectAllBtn = document.getElementById('rejectAllCookies');
+    
+    // Close modal function
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        // Save to localStorage that user has made a choice
+        localStorage.setItem('cookieConsent', 'true');
+    }
+    
+    // Accept all cookies
+    if (acceptAllBtn) {
+        acceptAllBtn.addEventListener('click', function() {
+            document.getElementById('cookieStatistics').checked = true;
+            document.getElementById('cookieMarketing').checked = true;
+            
+            localStorage.setItem('cookieStatistics', 'true');
+            localStorage.setItem('cookieMarketing', 'true');
+            
+            console.log('Alle Cookies akzeptiert');
+            closeModal();
+        });
+    }
+    
+    // Save custom settings
+    if (saveSettingsBtn) {
+        saveSettingsBtn.addEventListener('click', function() {
+            const statistics = document.getElementById('cookieStatistics').checked;
+            const marketing = document.getElementById('cookieMarketing').checked;
+            
+            localStorage.setItem('cookieStatistics', statistics);
+            localStorage.setItem('cookieMarketing', marketing);
+            
+            console.log('Cookie-Einstellungen gespeichert:', { statistics, marketing });
+            closeModal();
+        });
+    }
+    
+    // Reject all optional cookies
+    if (rejectAllBtn) {
+        rejectAllBtn.addEventListener('click', function() {
+            document.getElementById('cookieStatistics').checked = false;
+            document.getElementById('cookieMarketing').checked = false;
+            
+            localStorage.setItem('cookieStatistics', 'false');
+            localStorage.setItem('cookieMarketing', 'false');
+            
+            console.log('Nur notwendige Cookies akzeptiert');
+            closeModal();
+        });
+    }
+    
+    // Close modal
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    
+    // Check if user has already made a choice
+    const hasConsent = localStorage.getItem('cookieConsent');
+    
+    // Show cookie modal on first visit
+    if (!hasConsent) {
+        setTimeout(() => {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }, 1000); // Show after 1 second
+    }
+}
+
 // Initialize all modals when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeDemoModal();
     initializeContactModal();
     initializeSupportModal();
     initializeAboutModal();
+    initializeCookieModal();
 });
 
 console.log('🌊 Bäderbook - Digital Solutions initialized');
