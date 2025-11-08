@@ -1147,50 +1147,30 @@ body {
 
 /* Cookie Modal specific styles */
 .cookie-modal .modal-content {
-    max-width: 600px;
+    max-width: 500px;
+    padding: 24px;
 }
 
 .cookie-content {
-    margin-top: 20px;
-}
-
-.cookie-info-box {
-    background: rgba(147, 51, 234, 0.05);
-    border-left: 4px solid var(--primary-color);
-    padding: 20px;
-    border-radius: 12px;
-    margin: 20px 0;
-}
-
-.cookie-info-box p {
-    margin-bottom: 12px;
-    font-size: 14px;
-    line-height: 1.6;
+    margin-top: 12px;
 }
 
 .cookie-options {
-    margin: 24px 0;
-}
-
-.cookie-options h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: var(--text-color);
+    margin: 16px 0 12px 0;
 }
 
 .cookie-option {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 /* Custom checkbox styling */
 .cookie-checkbox {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    gap: 10px;
     cursor: pointer;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 8px;
+    border-radius: 8px;
     transition: var(--transition);
 }
 
@@ -1257,16 +1237,16 @@ body {
 .cookie-actions {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 8px;
+    margin-top: 16px;
 }
 
 .cookie-actions .btn {
     width: 100%;
-    padding: 14px 24px;
-    font-size: 16px;
+    padding: 12px 20px;
+    font-size: 14px;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
     transition: var(--transition);
