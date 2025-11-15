@@ -4,14 +4,9 @@
 // Demo users (in production, this would be handled by a backend)
 const DEMO_USERS = [
     {
-        email: 'demo@baederbook.de',
-        password: 'demo123',
-        name: 'Demo Benutzer'
-    },
-    {
-        email: 'admin@baederbook.de',
-        password: 'admin123',
-        name: 'Administrator'
+        email: 'info@baederbook.de',
+        password: '815-Sani',
+        name: 'Bäderbook Benutzer'
     }
 ];
 
@@ -85,8 +80,8 @@ function logout() {
 
 // List of protected pages (only these require authentication)
 const PROTECTED_PAGES = [
-    // Add protected pages here as needed
-    // Currently no pages require authentication
+    'statistiken.html'
+    // Add more protected pages here as needed
 ];
 
 // Public pages (always accessible without login)

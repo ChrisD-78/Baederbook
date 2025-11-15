@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiken - Bäderbook</title>
+    <meta name="description" content="Besucherstatistiken für Bäderbook">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 24px 80px;
+        }
+        
+        .stats-header {
+            margin-bottom: 40px;
+        }
+        
+        .stats-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        
+        .stats-header p {
+            font-size: 18px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .stat-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: white;
+            fill: none;
+        }
+        
+        .stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-color);
+            opacity: 0.7;
+            font-weight: 500;
+        }
+        
+        .stats-details {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 32px;
+        }
+        
+        .stats-details h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 24px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-size: 16px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .refresh-btn {
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 24px;
+        }
+        
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .stats-container {
+                padding: 100px 20px 60px;
+            }
+            
+            .stats-header h1 {
+                font-size: 36px;
+            }
+            
+            .stat-value {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                <img src="logo.svg" alt="Bäderbook Logo" width="40" height="40">
+                <span class="logo-text">Bäderbook</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html#features">Funktionen</a></li>
+                <li><a href="index.html" id="aboutLink">Über uns</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="stats-container">
+        <div class="stats-header">
+            <h1>Besucherstatistiken</h1>
+            <p>Übersicht über die Besucherzahlen Ihrer Website</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="totalVisitors">0</div>
+                <div class="stat-label">Gesamtbesucher</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="uniqueVisitors">0</div>
+                <div class="stat-label">Eindeutige Besucher</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="pageViews">0</div>
+                <div class="stat-label">Seitenaufrufe</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div class="stat-value" id="todayVisitors">0</div>
+                <div class="stat-label">Besucher heute</div>
+            </div>
+        </div>
+        
+        <div class="stats-details">
+            <h2>Detaillierte Statistiken</h2>
+            <div class="detail-item">
+                <span class="detail-label">Erste Besucher:</span>
+                <span class="detail-value" id="firstVisit">-</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Letzter Besucher:</span>
+                <span class="detail-value" id="lastVisit">-</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Durchschnittliche Besucher pro Tag:</span>
+                <span class="detail-value" id="avgPerDay">0</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Besucher diese Woche:</span>
+                <span class="detail-value" id="weekVisitors">0</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Besucher diesen Monat:</span>
+                <span class="detail-value" id="monthVisitors">0</span>
+            </div>
+            
+            <button class="refresh-btn" id="refreshBtn">Statistiken aktualisieren</button>
+        </div>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script src="stats.js"></script>
+    <script>
+        // Check authentication - this page requires login
+        if (!isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+        
+        // Load and display statistics
+        function loadStatistics() {
+            const stats = getStatistics();
+            
+            document.getElementById('totalVisitors').textContent = formatNumber(stats.totalVisitors);
+            document.getElementById('uniqueVisitors').textContent = formatNumber(stats.uniqueVisitors);
+            document.getElementById('pageViews').textContent = formatNumber(stats.pageViews);
+            document.getElementById('todayVisitors').textContent = formatNumber(stats.todayVisitors);
+            document.getElementById('firstVisit').textContent = stats.firstVisit || '-';
+            document.getElementById('lastVisit').textContent = stats.lastVisit || '-';
+            document.getElementById('avgPerDay').textContent = formatNumber(stats.avgPerDay);
+            document.getElementById('weekVisitors').textContent = formatNumber(stats.weekVisitors);
+            document.getElementById('monthVisitors').textContent = formatNumber(stats.monthVisitors);
+        }
+        
+        function formatNumber(num) {
+            return new Intl.NumberFormat('de-DE').format(num);
+        }
+        
+        // Load statistics on page load
+        loadStatistics();
+        
+        // Refresh button
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            loadStatistics();
+        });
+    </script>
+</body>
+</html>
+

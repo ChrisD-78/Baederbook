@@ -264,10 +264,22 @@
                 <h3>Formulare</h3>
                 <p>Wichtige Formulare digital ausfüllen und einreichen.</p>
             </div>
+            
+            <div class="dashboard-card" style="cursor: pointer;" onclick="window.location.href='statistiken.html'">
+                <div class="dashboard-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18"/>
+                        <path d="M18 17V9M12 17V5M6 17v-3"/>
+                    </svg>
+                </div>
+                <h3>Statistiken</h3>
+                <p>Besucherstatistiken und Analysen einsehen (nur für angemeldete Benutzer).</p>
+            </div>
         </div>
     </div>
     
     <script src="auth.js"></script>
+    <script src="stats.js"></script>
     <script>
         // Load user info (if logged in, otherwise show default)
         const user = getCurrentUser();
