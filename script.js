@@ -430,7 +430,7 @@ function initializeContactModal() {
             // 3. Kopieren Sie den Access Key
             // 4. Ersetzen Sie 'YOUR_ACCESS_KEY' unten
             
-            const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY'; // Ersetzen Sie dies mit Ihrem Web3Forms Access Key
+            const WEB3FORMS_ACCESS_KEY = '142b5736-a317-4429-bf17-eb929129690d';
             
             // Prepare form data for Web3Forms
             const formPayload = {
@@ -540,7 +540,7 @@ function initializeSupportModal() {
             submitBtn.disabled = true;
 
             // Web3Forms Configuration (same access key as contact form)
-            const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY'; // Ersetzen Sie dies mit Ihrem Web3Forms Access Key
+            const WEB3FORMS_ACCESS_KEY = '142b5736-a317-4429-bf17-eb929129690d';
             
             // Prepare form data for Web3Forms
             const formPayload = {
