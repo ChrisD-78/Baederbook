@@ -197,7 +197,7 @@
                     <p id="userEmail">E-Mail wird geladen...</p>
                 </div>
             </div>
-            <button class="logout-btn" id="logoutBtn">Abmelden</button>
+            <button class="logout-btn" id="logoutBtn" style="display: none;">Abmelden</button>
         </div>
         
         <div class="dashboard-grid">
@@ -269,12 +269,7 @@
     
     <script src="auth.js"></script>
     <script>
-        // Check authentication
-        if (!isAuthenticated()) {
-            window.location.href = 'login.html';
-        }
-        
-        // Load user info
+        // Load user info (if logged in, otherwise show default)
         const user = getCurrentUser();
         if (user) {
             document.getElementById('userName').textContent = user.name || 'Benutzer';
@@ -285,12 +280,23 @@
             if (user.name) {
                 avatar.textContent = user.name.charAt(0).toUpperCase();
             }
+            
+            // Show logout button if logged in
+            document.getElementById('logoutBtn').style.display = 'block';
+        } else {
+            // Show default info if not logged in
+            document.getElementById('userName').textContent = 'Gast';
+            document.getElementById('userEmail').textContent = 'Nicht angemeldet';
+            document.getElementById('userAvatar').textContent = 'G';
+            
+            // Hide logout button if not logged in
+            document.getElementById('logoutBtn').style.display = 'none';
         }
         
         // Logout functionality
         document.getElementById('logoutBtn').addEventListener('click', function() {
             logout();
-            window.location.href = 'login.html';
+            window.location.reload(); // Reload page to show guest state
         });
     </script>
 </body>

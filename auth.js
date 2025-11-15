@@ -85,14 +85,15 @@ function logout() {
 
 // List of protected pages (only these require authentication)
 const PROTECTED_PAGES = [
-    'dashboard.html'
-    // Add more protected pages here as needed
+    // Add protected pages here as needed
+    // Currently no pages require authentication
 ];
 
 // Public pages (always accessible without login)
 const PUBLIC_PAGES = [
     'index.html',
     'login.html',
+    'dashboard.html',
     'impressum.html',
     'datenschutz.html',
     'agb.html'
