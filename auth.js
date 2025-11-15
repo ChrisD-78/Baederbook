@@ -83,18 +83,44 @@ function logout() {
     localStorage.removeItem('baederbook_session');
 }
 
+// List of protected pages (only these require authentication)
+const PROTECTED_PAGES = [
+    'dashboard.html'
+    // Add more protected pages here as needed
+];
+
+// Public pages (always accessible without login)
+const PUBLIC_PAGES = [
+    'index.html',
+    'login.html',
+    'impressum.html',
+    'datenschutz.html',
+    'agb.html'
+];
+
 // Protect page - redirect to login if not authenticated
 function protectPage() {
-    if (!isAuthenticated()) {
-        const currentPage = window.location.pathname.split('/').pop();
-        if (currentPage !== 'login.html' && currentPage !== 'index.html') {
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Only protect pages in the PROTECTED_PAGES list
+    if (PROTECTED_PAGES.includes(currentPage)) {
+        if (!isAuthenticated()) {
             window.location.href = 'login.html';
         }
     }
+    // All other pages (including login.html) are public and accessible
 }
 
 // Initialize login form if on login page
 document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // If already logged in and on login page, redirect to dashboard
+    if (currentPage === 'login.html' && isAuthenticated()) {
+        window.location.href = 'dashboard.html';
+        return;
+    }
+    
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('errorMessage');
     const loginBtn = document.getElementById('loginBtn');
@@ -133,11 +159,11 @@ document.addEventListener('DOMContentLoaded', function() {
     protectPage();
 });
 
-// Auto-logout on session expiry
+// Auto-logout on session expiry (only check on protected pages)
 setInterval(function() {
-    if (!isAuthenticated()) {
-        const currentPage = window.location.pathname.split('/').pop();
-        if (currentPage === 'dashboard.html') {
+    const currentPage = window.location.pathname.split('/').pop();
+    if (PROTECTED_PAGES.includes(currentPage)) {
+        if (!isAuthenticated()) {
             window.location.href = 'login.html';
         }
     }
