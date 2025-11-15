@@ -540,21 +540,6 @@
     <script src="auth.js"></script>
     <script src="stats.js"></script>
     <script src="script.js"></script>
-    <script>
-        // Update auth link based on login status
-        document.addEventListener('DOMContentLoaded', function() {
-            const authLink = document.getElementById('authLink');
-            if (authLink) {
-                if (isAuthenticated()) {
-                    authLink.href = 'dashboard.html';
-                    authLink.textContent = 'Dashboard';
-                } else {
-                    authLink.href = 'login.html';
-                    authLink.textContent = 'Anmelden';
-                }
-            }
-        });
-    </script>
 </body>
 </html>
 
