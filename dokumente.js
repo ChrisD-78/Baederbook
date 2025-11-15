@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize price calculations for all forms
 function initializePriceCalculations() {
-    // Angebot price calculation
-    const angebotInputs = ['angebot-menge', 'angebot-preis', 'angebot-mwst'];
+    // Angebot price calculation (Abo-Modell)
+    const angebotInputs = ['angebot-einrichtung', 'angebot-mwst-einrichtung', 'angebot-datenvolumen', 'angebot-preis-pro-gb', 'angebot-mwst-monatlich'];
     angebotInputs.forEach(id => {
         const input = document.getElementById(id);
         if (input) {
@@ -51,7 +51,7 @@ function initializePriceCalculations() {
         }
     });
     
-    // Auftrag price calculation
+    // Auftrag price calculation (unchanged)
     const auftragInputs = ['auftrag-menge', 'auftrag-preis', 'auftrag-mwst'];
     auftragInputs.forEach(id => {
         const input = document.getElementById(id);
@@ -60,8 +60,8 @@ function initializePriceCalculations() {
         }
     });
     
-    // Rechnung price calculation
-    const rechnungInputs = ['rechnung-menge', 'rechnung-preis', 'rechnung-mwst'];
+    // Rechnung price calculation (Abo-Modell)
+    const rechnungInputs = ['rechnung-einrichtung', 'rechnung-mwst-einrichtung', 'rechnung-datenvolumen', 'rechnung-preis-pro-gb', 'rechnung-mwst-monatlich'];
     rechnungInputs.forEach(id => {
         const input = document.getElementById(id);
         if (input) {
@@ -70,16 +70,26 @@ function initializePriceCalculations() {
     });
 }
 
-// Calculate Angebot price
+// Calculate Angebot price (Abo-Modell: Einrichtung + erste Monatsgebühr)
 function calculateAngebotPrice() {
-    const menge = parseFloat(document.getElementById('angebot-menge').value) || 0;
-    const preis = parseFloat(document.getElementById('angebot-preis').value) || 0;
-    const mwst = parseFloat(document.getElementById('angebot-mwst').value) || 0;
+    // Einrichtung
+    const einrichtung = parseFloat(document.getElementById('angebot-einrichtung').value) || 0;
+    const mwstEinrichtung = parseFloat(document.getElementById('angebot-mwst-einrichtung').value) || 0;
+    const einrichtungBrutto = einrichtung * (1 + mwstEinrichtung / 100);
     
-    const netto = menge * preis;
-    const brutto = netto * (1 + mwst / 100);
+    // Monatliche Gebühr
+    const datenvolumen = parseFloat(document.getElementById('angebot-datenvolumen').value) || 0;
+    const preisProGB = parseFloat(document.getElementById('angebot-preis-pro-gb').value) || 0;
+    const monatlichNetto = datenvolumen * preisProGB;
+    const mwstMonatlich = parseFloat(document.getElementById('angebot-mwst-monatlich').value) || 0;
+    const monatlichBrutto = monatlichNetto * (1 + mwstMonatlich / 100);
     
-    document.getElementById('angebot-gesamt').value = brutto.toFixed(2);
+    // Monatliche Gebühr anzeigen
+    document.getElementById('angebot-monatlich').value = monatlichBrutto.toFixed(2);
+    
+    // Gesamtpreis (Einrichtung + erste Monatsgebühr)
+    const gesamt = einrichtungBrutto + monatlichBrutto;
+    document.getElementById('angebot-gesamt').value = gesamt.toFixed(2);
 }
 
 // Calculate Auftrag price
@@ -94,13 +104,53 @@ function calculateAuftragPrice() {
     document.getElementById('auftrag-gesamt').value = brutto.toFixed(2);
 }
 
-// Calculate Rechnung price
-function calculateRechnungPrice() {
-    const menge = parseFloat(document.getElementById('rechnung-menge').value) || 0;
-    const preis = parseFloat(document.getElementById('rechnung-preis').value) || 0;
-    const mwst = parseFloat(document.getElementById('rechnung-mwst').value) || 0;
+// Toggle Rechnung typ (Einrichtung oder Monatlich)
+function toggleRechnungTyp() {
+    const typ = document.getElementById('rechnung-typ').value;
+    const einrichtungBlock = document.getElementById('rechnung-einrichtung-block');
+    const monatlichBlock = document.getElementById('rechnung-monatlich-block');
     
-    const netto = menge * preis;
+    if (typ === 'einrichtung') {
+        einrichtungBlock.style.display = 'block';
+        monatlichBlock.style.display = 'none';
+        // Clear monatlich fields
+        document.getElementById('rechnung-datenvolumen').value = '';
+        document.getElementById('rechnung-preis-pro-gb').value = '';
+        document.getElementById('rechnung-monatlich').value = '';
+    } else if (typ === 'monatlich') {
+        einrichtungBlock.style.display = 'none';
+        monatlichBlock.style.display = 'block';
+        // Clear einrichtung fields
+        document.getElementById('rechnung-einrichtung').value = '';
+    } else {
+        einrichtungBlock.style.display = 'none';
+        monatlichBlock.style.display = 'none';
+    }
+    
+    calculateRechnungPrice();
+}
+
+// Calculate Rechnung price (Abo-Modell: Einrichtung ODER Monatlich)
+function calculateRechnungPrice() {
+    const typ = document.getElementById('rechnung-typ')?.value;
+    
+    let netto = 0;
+    let mwst = 0;
+    
+    if (typ === 'einrichtung') {
+        netto = parseFloat(document.getElementById('rechnung-einrichtung').value) || 0;
+        mwst = parseFloat(document.getElementById('rechnung-mwst-einrichtung').value) || 0;
+    } else if (typ === 'monatlich') {
+        const datenvolumen = parseFloat(document.getElementById('rechnung-datenvolumen').value) || 0;
+        const preisProGB = parseFloat(document.getElementById('rechnung-preis-pro-gb').value) || 0;
+        netto = datenvolumen * preisProGB;
+        mwst = parseFloat(document.getElementById('rechnung-mwst-monatlich').value) || 0;
+        
+        // Monatliche Gebühr anzeigen
+        const monatlichBrutto = netto * (1 + mwst / 100);
+        document.getElementById('rechnung-monatlich').value = monatlichBrutto.toFixed(2);
+    }
+    
     const mwstBetrag = netto * (mwst / 100);
     const brutto = netto + mwstBetrag;
     
@@ -116,6 +166,27 @@ function initializeFormSubmissions() {
     if (angebotForm) {
         angebotForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Validate required fields
+            const einrichtung = document.getElementById('angebot-einrichtung').value;
+            const datenvolumen = document.getElementById('angebot-datenvolumen').value;
+            const preisProGB = document.getElementById('angebot-preis-pro-gb').value;
+            
+            if (!einrichtung || parseFloat(einrichtung) <= 0) {
+                alert('Bitte geben Sie einen gültigen Einrichtungspreis ein.');
+                return;
+            }
+            
+            if (!datenvolumen || parseFloat(datenvolumen) <= 0) {
+                alert('Bitte geben Sie ein gültiges Datenvolumen ein.');
+                return;
+            }
+            
+            if (!preisProGB || parseFloat(preisProGB) <= 0) {
+                alert('Bitte geben Sie einen gültigen Preis pro GB ein.');
+                return;
+            }
+            
             saveDocument('angebot', collectFormData(this));
         });
     }
@@ -134,6 +205,34 @@ function initializeFormSubmissions() {
     if (rechnungForm) {
         rechnungForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Validate that rechnung type is selected
+            const rechnungTyp = document.getElementById('rechnung-typ').value;
+            if (!rechnungTyp) {
+                alert('Bitte wählen Sie einen Rechnungstyp aus.');
+                return;
+            }
+            
+            // Validate required fields based on type
+            if (rechnungTyp === 'einrichtung') {
+                const einrichtung = document.getElementById('rechnung-einrichtung').value;
+                if (!einrichtung || parseFloat(einrichtung) <= 0) {
+                    alert('Bitte geben Sie einen gültigen Einrichtungspreis ein.');
+                    return;
+                }
+            } else if (rechnungTyp === 'monatlich') {
+                const datenvolumen = document.getElementById('rechnung-datenvolumen').value;
+                const preisProGB = document.getElementById('rechnung-preis-pro-gb').value;
+                if (!datenvolumen || parseFloat(datenvolumen) <= 0) {
+                    alert('Bitte geben Sie ein gültiges Datenvolumen ein.');
+                    return;
+                }
+                if (!preisProGB || parseFloat(preisProGB) <= 0) {
+                    alert('Bitte geben Sie einen gültigen Preis pro GB ein.');
+                    return;
+                }
+            }
+            
             saveDocument('rechnung', collectFormData(this));
         });
     }
@@ -253,6 +352,12 @@ function viewDocument(id, type) {
     setTimeout(() => {
         const form = document.getElementById(`${type}Form`);
         if (form) {
+            // For Rechnung, set type first to show correct fields
+            if (type === 'rechnung' && document['rechnung-typ']) {
+                document.getElementById('rechnung-typ').value = document['rechnung-typ'];
+                toggleRechnungTyp();
+            }
+            
             Object.keys(document).forEach(key => {
                 if (key !== 'id' && key !== 'type' && key !== 'createdAt' && key !== 'documentNumber') {
                     const input = form.querySelector(`[name="${key}"]`);
@@ -265,7 +370,10 @@ function viewDocument(id, type) {
             // Recalculate prices
             if (type === 'angebot') calculateAngebotPrice();
             if (type === 'auftrag') calculateAuftragPrice();
-            if (type === 'rechnung') calculateRechnungPrice();
+            if (type === 'rechnung') {
+                // Wait a bit for fields to be visible
+                setTimeout(() => calculateRechnungPrice(), 50);
+            }
         }
     }, 100);
 }
@@ -310,4 +418,5 @@ function calculateDueDate() {
 // Make functions globally available
 window.viewDocument = viewDocument;
 window.deleteDocument = deleteDocument;
+window.toggleRechnungTyp = toggleRechnungTyp;
 
