@@ -423,52 +423,56 @@ function initializeContactModal() {
             submitBtn.textContent = 'Wird gesendet...';
             submitBtn.disabled = true;
 
-            // Prepare email body with formatted content
-            const emailBody = `Hallo Bäderbook Team,
-
-ich habe über das Kontaktformular eine Nachricht gesendet:
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-KONTAKTDATEN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Name: ${data.name}
-E-Mail: ${data.email}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-NACHRICHT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.message}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Diese Nachricht wurde über das Kontaktformular auf bäderbook.de gesendet.
-Bitte antworten Sie direkt an: ${data.email}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-
-            // Create mailto link
-            const mailtoLink = `mailto:info@baederbook.de?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(emailBody)}`;
+            // Web3Forms Configuration
+            // WICHTIG: Ersetzen Sie 'YOUR_ACCESS_KEY' mit Ihrem Web3Forms Access Key
+            // 1. Gehen Sie zu https://web3forms.com/
+            // 2. Geben Sie Ihre E-Mail-Adresse ein (info@baederbook.de)
+            // 3. Kopieren Sie den Access Key
+            // 4. Ersetzen Sie 'YOUR_ACCESS_KEY' unten
             
-            // Try to open email client
-            try {
-                window.location.href = mailtoLink;
+            const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY'; // Ersetzen Sie dies mit Ihrem Web3Forms Access Key
+            
+            // Prepare form data for Web3Forms
+            const formPayload = {
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: data.subject,
+                from_name: data.name,
+                email: data.email,
+                message: `Kontaktanfrage von ${data.name} (${data.email})\n\nBetreff: ${data.subject}\n\nNachricht:\n${data.message}`,
+                // Optional: Custom redirect after submission
+                redirect: false
+            };
+
+            // Send form data to Web3Forms
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formPayload)
+            })
+            .then(async (response) => {
+                const json = await response.json();
                 
-                // Show success message after a short delay
-                setTimeout(function() {
-                    alert('Ihr E-Mail-Client wurde geöffnet. Bitte senden Sie die vorbereitete E-Mail ab.\n\nFalls Ihr E-Mail-Client nicht geöffnet wurde, senden Sie bitte eine E-Mail an:\ninfo@baederbook.de\n\nBetreff: ' + data.subject);
+                if (response.ok && json.success) {
+                    // Success
+                    alert('Vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage erhalten und melden uns in Kürze bei Ihnen.');
                     closeModal();
                     contactForm.reset();
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                }, 500);
-            } catch (error) {
-                console.error('Error opening email client:', error);
-                // Fallback: Show email details for manual copy
-                const emailDetails = `Bitte senden Sie eine E-Mail an:\n\ninfo@baederbook.de\n\nBetreff: ${data.subject}\n\nNachricht:\n${emailBody}`;
-                alert(emailDetails);
-                closeModal();
-                contactForm.reset();
+                } else {
+                    // Error from API
+                    throw new Error(json.message || 'Fehler beim Senden der Nachricht');
+                }
+            })
+            .catch((error) => {
+                console.error('Form submission error:', error);
+                alert('Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt unter info@baederbook.de');
+            })
+            .finally(() => {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }
+            });
         });
     }
 }
@@ -535,53 +539,49 @@ function initializeSupportModal() {
             submitBtn.textContent = 'Wird gesendet...';
             submitBtn.disabled = true;
 
-            // Prepare email body with formatted content
-            const emailBody = `Hallo Bäderbook Support-Team,
-
-ich benötige technischen Support:
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-KONTAKTDATEN
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Name: ${data.name}
-E-Mail: ${data.email}
-${data.bad ? `Bad: ${data.bad}` : ''}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SUPPORT-ANFRAGE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.message}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Diese Support-Anfrage wurde über das Support-Formular auf bäderbook.de gesendet.
-Bitte antworten Sie direkt an: ${data.email}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-
-            // Create mailto link
-            const mailtoLink = `mailto:info@baederbook.de?subject=${encodeURIComponent('Support-Anfrage - Bäderbook')}&body=${encodeURIComponent(emailBody)}`;
+            // Web3Forms Configuration (same access key as contact form)
+            const WEB3FORMS_ACCESS_KEY = 'YOUR_ACCESS_KEY'; // Ersetzen Sie dies mit Ihrem Web3Forms Access Key
             
-            // Try to open email client
-            try {
-                window.location.href = mailtoLink;
+            // Prepare form data for Web3Forms
+            const formPayload = {
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: 'Support-Anfrage - Bäderbook',
+                from_name: data.name,
+                email: data.email,
+                message: `Support-Anfrage von ${data.name} (${data.email})${data.bad ? `\nBad: ${data.bad}` : ''}\n\nNachricht:\n${data.message}`,
+                redirect: false
+            };
+
+            // Send form data to Web3Forms
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formPayload)
+            })
+            .then(async (response) => {
+                const json = await response.json();
                 
-                // Show success message after a short delay
-                setTimeout(function() {
-                    alert('Ihr E-Mail-Client wurde geöffnet. Bitte senden Sie die vorbereitete Support-Anfrage ab.\n\nFalls Ihr E-Mail-Client nicht geöffnet wurde, senden Sie bitte eine E-Mail an:\ninfo@baederbook.de\n\nBetreff: Support-Anfrage - Bäderbook');
+                if (response.ok && json.success) {
+                    // Success
+                    alert('Ihr Support-Ticket wurde erfolgreich erstellt! Wir bearbeiten Ihre Anfrage schnellstmöglich und melden uns bei Ihnen.');
                     closeModal();
                     supportForm.reset();
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                }, 500);
-            } catch (error) {
-                console.error('Error opening email client:', error);
-                // Fallback: Show email details for manual copy
-                const emailDetails = `Bitte senden Sie eine E-Mail an:\n\ninfo@baederbook.de\n\nBetreff: Support-Anfrage - Bäderbook\n\nNachricht:\n${emailBody}`;
-                alert(emailDetails);
-                closeModal();
-                supportForm.reset();
+                } else {
+                    // Error from API
+                    throw new Error(json.message || 'Fehler beim Senden der Support-Anfrage');
+                }
+            })
+            .catch((error) => {
+                console.error('Form submission error:', error);
+                alert('Es gab ein Problem beim Senden Ihrer Support-Anfrage. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt unter info@baederbook.de');
+            })
+            .finally(() => {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }
+            });
         });
     }
 }
