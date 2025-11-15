@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumente - Bäderbook</title>
+    <meta name="description" content="Angebote, Aufträge und Rechnungen verwalten">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dokumente-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 24px 80px;
+        }
+        
+        .dokumente-header {
+            margin-bottom: 40px;
+        }
+        
+        .dokumente-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+        
+        .dokumente-header p {
+            font-size: 18px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .dokumente-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid rgba(147, 51, 234, 0.2);
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            bottom: -2px;
+        }
+        
+        .tab-button:hover {
+            color: var(--primary-color);
+        }
+        
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .document-form {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-section {
+            margin-bottom: 32px;
+        }
+        
+        .form-section h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(147, 51, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+            font-size: 14px;
+        }
+        
+        .form-group label.required::after {
+            content: " *";
+            color: #dc2626;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(147, 51, 234, 0.2);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: white;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(147, 51, 234, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(147, 51, 234, 0.2);
+        }
+        
+        .saved-documents {
+            margin-top: 40px;
+        }
+        
+        .saved-documents h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 24px;
+        }
+        
+        .document-list {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .document-item {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .document-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .document-info h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+        }
+        
+        .document-info p {
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+        
+        .legal-notice {
+            background: rgba(147, 51, 234, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .legal-notice strong {
+            color: var(--dark-color);
+        }
+        
+        @media (max-width: 768px) {
+            .dokumente-container {
+                padding: 100px 20px 60px;
+            }
+            
+            .dokumente-header h1 {
+                font-size: 36px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .document-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                <img src="logo.svg" alt="Bäderbook Logo" width="40" height="40">
+                <span class="logo-text">Bäderbook</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="index.html#features">Funktionen</a></li>
+                <li><a href="index.html" id="aboutLink">Über uns</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dokumente-container">
+        <div class="dokumente-header">
+            <h1>Dokumente verwalten</h1>
+            <p>Erstellen und verwalten Sie Angebote, Aufträge und Rechnungen</p>
+        </div>
+        
+        <div class="dokumente-tabs">
+            <button class="tab-button active" data-tab="angebot">Angebot</button>
+            <button class="tab-button" data-tab="auftrag">Auftrag</button>
+            <button class="tab-button" data-tab="rechnung">Rechnung</button>
+        </div>
+        
+        <!-- Angebot Tab -->
+        <div id="angebot" class="tab-content active">
+            <form id="angebotForm" class="document-form">
+                <div class="form-section">
+                    <h3>Angebotsinformationen</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Angebotsnummer</label>
+                            <input type="text" id="angebot-nr" name="angebot-nr" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Angebotsdatum</label>
+                            <input type="date" id="angebot-datum" name="angebot-datum" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Gültig bis</label>
+                            <input type="date" id="angebot-gueltig" name="angebot-gueltig">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Kundeninformationen</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Firmenname / Name</label>
+                            <input type="text" id="angebot-kunde" name="angebot-kunde" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ansprechpartner</label>
+                            <input type="text" id="angebot-ansprechpartner" name="angebot-ansprechpartner">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Straße & Hausnummer</label>
+                        <input type="text" id="angebot-strasse" name="angebot-strasse" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">PLZ</label>
+                            <input type="text" id="angebot-plz" name="angebot-plz" required pattern="[0-9]{5}">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Ort</label>
+                            <input type="text" id="angebot-ort" name="angebot-ort" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>E-Mail</label>
+                            <input type="email" id="angebot-email" name="angebot-email">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon</label>
+                            <input type="tel" id="angebot-telefon" name="angebot-telefon">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Angebotspositionen</h3>
+                    <div class="form-group">
+                        <label class="required">Beschreibung</label>
+                        <textarea id="angebot-beschreibung" name="angebot-beschreibung" required placeholder="Beschreiben Sie die angebotenen Leistungen..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Menge</label>
+                            <input type="number" id="angebot-menge" name="angebot-menge" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Einheit</label>
+                            <select id="angebot-einheit" name="angebot-einheit" required>
+                                <option value="">Bitte wählen</option>
+                                <option value="Stück">Stück</option>
+                                <option value="Stunden">Stunden</option>
+                                <option value="Tag">Tag</option>
+                                <option value="Monat">Monat</option>
+                                <option value="Jahr">Jahr</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Einzelpreis (€)</label>
+                            <input type="number" id="angebot-preis" name="angebot-preis" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>MwSt. (%)</label>
+                            <select id="angebot-mwst" name="angebot-mwst">
+                                <option value="19">19%</option>
+                                <option value="7">7%</option>
+                                <option value="0">0% (steuerfrei)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Gesamtpreis (€)</label>
+                            <input type="number" id="angebot-gesamt" name="angebot-gesamt" readonly style="background: #f5f5f5;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Zusätzliche Informationen</h3>
+                    <div class="form-group">
+                        <label>Zahlungsbedingungen</label>
+                        <textarea id="angebot-zahlung" name="angebot-zahlung" placeholder="z.B. Zahlung innerhalb von 14 Tagen"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bemerkungen</label>
+                        <textarea id="angebot-bemerkung" name="angebot-bemerkung" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="legal-notice">
+                    <strong>Rechtlicher Hinweis:</strong> Dieses Angebot ist rechtlich nicht bindend, sofern nicht ausdrücklich anders vereinbart. 
+                    Alle Preise verstehen sich in Euro zuzüglich der gesetzlichen Mehrwertsteuer, sofern nicht anders angegeben.
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Angebot speichern</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('angebotForm').reset();">Zurücksetzen</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Auftrag Tab -->
+        <div id="auftrag" class="tab-content">
+            <form id="auftragForm" class="document-form">
+                <div class="form-section">
+                    <h3>Auftragsinformationen</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Auftragsnummer</label>
+                            <input type="text" id="auftrag-nr" name="auftrag-nr" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Auftragsdatum</label>
+                            <input type="date" id="auftrag-datum" name="auftrag-datum" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Lieferdatum / Fertigstellung</label>
+                            <input type="date" id="auftrag-lieferdatum" name="auftrag-lieferdatum">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Kundeninformationen</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Firmenname / Name</label>
+                            <input type="text" id="auftrag-kunde" name="auftrag-kunde" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ansprechpartner</label>
+                            <input type="text" id="auftrag-ansprechpartner" name="auftrag-ansprechpartner">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Straße & Hausnummer</label>
+                        <input type="text" id="auftrag-strasse" name="auftrag-strasse" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">PLZ</label>
+                            <input type="text" id="auftrag-plz" name="auftrag-plz" required pattern="[0-9]{5}">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Ort</label>
+                            <input type="text" id="auftrag-ort" name="auftrag-ort" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>E-Mail</label>
+                            <input type="email" id="auftrag-email" name="auftrag-email">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon</label>
+                            <input type="tel" id="auftrag-telefon" name="auftrag-telefon">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Auftragspositionen</h3>
+                    <div class="form-group">
+                        <label class="required">Beschreibung</label>
+                        <textarea id="auftrag-beschreibung" name="auftrag-beschreibung" required placeholder="Beschreiben Sie die zu erbringenden Leistungen..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Menge</label>
+                            <input type="number" id="auftrag-menge" name="auftrag-menge" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Einheit</label>
+                            <select id="auftrag-einheit" name="auftrag-einheit" required>
+                                <option value="">Bitte wählen</option>
+                                <option value="Stück">Stück</option>
+                                <option value="Stunden">Stunden</option>
+                                <option value="Tag">Tag</option>
+                                <option value="Monat">Monat</option>
+                                <option value="Jahr">Jahr</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Einzelpreis (€)</label>
+                            <input type="number" id="auftrag-preis" name="auftrag-preis" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>MwSt. (%)</label>
+                            <select id="auftrag-mwst" name="auftrag-mwst">
+                                <option value="19">19%</option>
+                                <option value="7">7%</option>
+                                <option value="0">0% (steuerfrei)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Gesamtpreis (€)</label>
+                            <input type="number" id="auftrag-gesamt" name="auftrag-gesamt" readonly style="background: #f5f5f5;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Zusätzliche Informationen</h3>
+                    <div class="form-group">
+                        <label>Zahlungsbedingungen</label>
+                        <textarea id="auftrag-zahlung" name="auftrag-zahlung" placeholder="z.B. Zahlung innerhalb von 14 Tagen"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bemerkungen</label>
+                        <textarea id="auftrag-bemerkung" name="auftrag-bemerkung" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="legal-notice">
+                    <strong>Rechtlicher Hinweis:</strong> Mit der Annahme dieses Auftrags kommt ein rechtsverbindlicher Vertrag zustande. 
+                    Alle Preise verstehen sich in Euro zuzüglich der gesetzlichen Mehrwertsteuer, sofern nicht anders angegeben.
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Auftrag speichern</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('auftragForm').reset();">Zurücksetzen</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Rechnung Tab -->
+        <div id="rechnung" class="tab-content">
+            <form id="rechnungForm" class="document-form">
+                <div class="form-section">
+                    <h3>Rechnungsinformationen</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Rechnungsnummer</label>
+                            <input type="text" id="rechnung-nr" name="rechnung-nr" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Rechnungsdatum</label>
+                            <input type="date" id="rechnung-datum" name="rechnung-datum" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Fälligkeitsdatum</label>
+                            <input type="date" id="rechnung-faellig" name="rechnung-faellig" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Leistungsdatum</label>
+                            <input type="date" id="rechnung-leistung" name="rechnung-leistung">
+                        </div>
+                        <div class="form-group">
+                            <label>Zahlungsziel (Tage)</label>
+                            <input type="number" id="rechnung-zahlungsziel" name="rechnung-zahlungsziel" min="0" value="14">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Kundeninformationen</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Firmenname / Name</label>
+                            <input type="text" id="rechnung-kunde" name="rechnung-kunde" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ansprechpartner</label>
+                            <input type="text" id="rechnung-ansprechpartner" name="rechnung-ansprechpartner">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Straße & Hausnummer</label>
+                        <input type="text" id="rechnung-strasse" name="rechnung-strasse" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">PLZ</label>
+                            <input type="text" id="rechnung-plz" name="rechnung-plz" required pattern="[0-9]{5}">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Ort</label>
+                            <input type="text" id="rechnung-ort" name="rechnung-ort" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>E-Mail</label>
+                            <input type="email" id="rechnung-email" name="rechnung-email">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon</label>
+                            <input type="tel" id="rechnung-telefon" name="rechnung-telefon">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Rechnungspositionen</h3>
+                    <div class="form-group">
+                        <label class="required">Beschreibung</label>
+                        <textarea id="rechnung-beschreibung" name="rechnung-beschreibung" required placeholder="Beschreiben Sie die erbrachten Leistungen..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">Menge</label>
+                            <input type="number" id="rechnung-menge" name="rechnung-menge" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Einheit</label>
+                            <select id="rechnung-einheit" name="rechnung-einheit" required>
+                                <option value="">Bitte wählen</option>
+                                <option value="Stück">Stück</option>
+                                <option value="Stunden">Stunden</option>
+                                <option value="Tag">Tag</option>
+                                <option value="Monat">Monat</option>
+                                <option value="Jahr">Jahr</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Einzelpreis (€)</label>
+                            <input type="number" id="rechnung-preis" name="rechnung-preis" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="required">MwSt. (%)</label>
+                            <select id="rechnung-mwst" name="rechnung-mwst" required>
+                                <option value="19">19%</option>
+                                <option value="7">7%</option>
+                                <option value="0">0% (steuerfrei)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nettobetrag (€)</label>
+                            <input type="number" id="rechnung-netto" name="rechnung-netto" readonly style="background: #f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label>MwSt.-Betrag (€)</label>
+                            <input type="number" id="rechnung-mwst-betrag" name="rechnung-mwst-betrag" readonly style="background: #f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label>Bruttobetrag (€)</label>
+                            <input type="number" id="rechnung-brutto" name="rechnung-brutto" readonly style="background: #f5f5f5;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Zusätzliche Informationen</h3>
+                    <div class="form-group">
+                        <label>Zahlungsinformationen</label>
+                        <textarea id="rechnung-zahlung" name="rechnung-zahlung" placeholder="z.B. Bankverbindung, IBAN, BIC"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bemerkungen</label>
+                        <textarea id="rechnung-bemerkung" name="rechnung-bemerkung" placeholder="Zusätzliche Informationen..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="legal-notice">
+                    <strong>Rechtlicher Hinweis:</strong> Diese Rechnung ist gemäß § 14 UStG auszustellen. 
+                    Alle Preise verstehen sich in Euro. Die Rechnung wird mit Zugang fällig, sofern nicht anders vereinbart. 
+                    Bei Zahlungsverzug werden Verzugszinsen gemäß § 288 BGB berechnet.
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Rechnung speichern</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('rechnungForm').reset();">Zurücksetzen</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Gespeicherte Dokumente -->
+        <div class="saved-documents">
+            <h3>Gespeicherte Dokumente</h3>
+            <div id="documentList" class="document-list">
+                <!-- Dokumente werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="auth.js"></script>
+    <script src="stats.js"></script>
+    <script src="dokumente.js"></script>
+</body>
+</html>
+
