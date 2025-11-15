@@ -529,10 +529,59 @@ function initializeSupportModal() {
                 return;
             }
 
-            console.log('Support Form Data:', data);
-            alert('Ihr Support-Ticket wurde erstellt! Wir bearbeiten Ihre Anfrage schnellstmöglich.');
-            closeModal();
-            supportForm.reset();
+            // Show loading state
+            const submitBtn = supportForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Wird gesendet...';
+            submitBtn.disabled = true;
+
+            // Prepare email body with formatted content
+            const emailBody = `Hallo Bäderbook Support-Team,
+
+ich benötige technischen Support:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KONTAKTDATEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name: ${data.name}
+E-Mail: ${data.email}
+${data.bad ? `Bad: ${data.bad}` : ''}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SUPPORT-ANFRAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.message}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Diese Support-Anfrage wurde über das Support-Formular auf bäderbook.de gesendet.
+Bitte antworten Sie direkt an: ${data.email}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+            // Create mailto link
+            const mailtoLink = `mailto:info@baederbook.de?subject=${encodeURIComponent('Support-Anfrage - Bäderbook')}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Try to open email client
+            try {
+                window.location.href = mailtoLink;
+                
+                // Show success message after a short delay
+                setTimeout(function() {
+                    alert('Ihr E-Mail-Client wurde geöffnet. Bitte senden Sie die vorbereitete Support-Anfrage ab.\n\nFalls Ihr E-Mail-Client nicht geöffnet wurde, senden Sie bitte eine E-Mail an:\ninfo@baederbook.de\n\nBetreff: Support-Anfrage - Bäderbook');
+                    closeModal();
+                    supportForm.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 500);
+            } catch (error) {
+                console.error('Error opening email client:', error);
+                // Fallback: Show email details for manual copy
+                const emailDetails = `Bitte senden Sie eine E-Mail an:\n\ninfo@baederbook.de\n\nBetreff: Support-Anfrage - Bäderbook\n\nNachricht:\n${emailBody}`;
+                alert(emailDetails);
+                closeModal();
+                supportForm.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
     }
 }
