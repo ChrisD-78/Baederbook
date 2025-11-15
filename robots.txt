@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://baederbook.de/sitemap.xml
+
+# Disallow private/protected areas
+Disallow: /demo/
+Disallow: /statistiken.html
+
+# Allow important pages
+Allow: /index.html
+Allow: /login.html
+Allow: /dashboard.html
+Allow: /dokumente.html
+Allow: /impressum.html
+Allow: /datenschutz.html
+Allow: /agb.html
+
+# Crawl-delay (optional, helps with server load)
+Crawl-delay: 1
+

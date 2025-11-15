@@ -3,13 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bäderbook – das Intranet für Freizeit- & Freibäder</title>
-    <meta name="description" content="Gemeinsam läuft's besser. Mit Bäderbook bringst du dein ganzes Team zusammen – egal ob am Beckenrand, Technikraum, oder an der Kasse. Alle Infos. Alle Dienste. Alles im Flow.">
+    
+    <!-- Primary Meta Tags -->
+    <title>Bäderbook – das Intranet für Freizeit- & Freibäder | Digitales Mitarbeiterportal</title>
+    <meta name="title" content="Bäderbook – das Intranet für Freizeit- & Freibäder">
+    <meta name="description" content="Bäderbook ist das moderne Intranet für Freizeit- und Freibäder. Digitales Mitarbeiterportal mit Aufgaben, Dokumenten, Formularen, Schulungen und Chat. Gemeinsam läuft's besser.">
+    <meta name="keywords" content="Bäderbook, Intranet, Freibad, Freizeitbad, Mitarbeiterportal, Badverwaltung, Digitalisierung, Bäder, Schwimmbad, Team-Kommunikation">
+    <meta name="author" content="Bäderbook - Christof Drost">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="German">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://baederbook.de/">
+    
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://baederbook.de/">
+    <meta property="og:title" content="Bäderbook – das Intranet für Freizeit- & Freibäder">
+    <meta property="og:description" content="Digitales Mitarbeiterportal für Freizeit- und Freibäder. Aufgaben, Dokumente, Formulare, Schulungen und Team-Kommunikation an einem Ort.">
+    <meta property="og:image" content="https://baederbook.de/logo.svg">
+    <meta property="og:locale" content="de_DE">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://baederbook.de/">
+    <meta property="twitter:title" content="Bäderbook – das Intranet für Freizeit- & Freibäder">
+    <meta property="twitter:description" content="Digitales Mitarbeiterportal für Freizeit- und Freibäder. Aufgaben, Dokumente, Formulare, Schulungen und Team-Kommunikation an einem Ort.">
+    <meta property="twitter:image" content="https://baederbook.de/logo.svg">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="logo.svg">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Structured Data (JSON-LD) for Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Bäderbook",
+        "url": "https://baederbook.de",
+        "logo": "https://baederbook.de/logo.svg",
+        "description": "Digitales Intranet und Mitarbeiterportal für Freizeit- und Freibäder",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Marktstraße 98",
+            "addressLocality": "Landau in der Pfalz",
+            "postalCode": "76829",
+            "addressCountry": "DE"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "info@baederbook.de",
+            "contactType": "customer service"
+        },
+        "founder": {
+            "@type": "Person",
+            "name": "Christof Drost"
+        },
+        "sameAs": []
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Bäderbook",
+        "url": "https://baederbook.de",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://baederbook.de/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Bäderbook",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "description": "Digitales Intranet für Freizeit- und Freibäder mit Aufgabenverwaltung, Dokumentenmanagement, Formularen, Schulungen und Team-Kommunikation"
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
+    <header>
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
@@ -24,7 +116,9 @@
             </ul>
         </div>
     </nav>
+    </header>
 
+    <main>
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -278,6 +372,8 @@
             </div>
         </div>
     </section>
+
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
