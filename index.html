@@ -20,6 +20,7 @@
                 <li><a href="#features">Funktionen</a></li>
                 <li><a href="#" id="aboutLink">Über uns</a></li>
                 <li><a href="#benefits">Vorteile</a></li>
+                <li><a href="login.html" id="authLink">Anmelden</a></li>
             </ul>
         </div>
     </nav>
@@ -536,7 +537,23 @@
         </div>
     </div>
 
+    <script src="auth.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Update auth link based on login status
+        document.addEventListener('DOMContentLoaded', function() {
+            const authLink = document.getElementById('authLink');
+            if (authLink) {
+                if (isAuthenticated()) {
+                    authLink.href = 'dashboard.html';
+                    authLink.textContent = 'Dashboard';
+                } else {
+                    authLink.href = 'login.html';
+                    authLink.textContent = 'Anmelden';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
 
