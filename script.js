@@ -417,10 +417,67 @@ function initializeContactModal() {
                 return;
             }
 
-            console.log('Contact Form Data:', data);
-            alert('Vielen Dank für Ihre Nachricht! Wir melden uns in Kürze bei Ihnen.');
-            closeModal();
-            contactForm.reset();
+            // EmailJS Configuration
+            // WICHTIG: Diese Werte müssen in EmailJS konfiguriert werden
+            // 1. Gehen Sie zu https://www.emailjs.com/
+            // 2. Erstellen Sie einen kostenlosen Account
+            // 3. Erstellen Sie einen Email Service (z.B. Gmail)
+            // 4. Erstellen Sie ein Email Template
+            // 5. Kopieren Sie Ihre Public Key, Service ID und Template ID hier ein
+            
+            const EMAILJS_CONFIG = {
+                PUBLIC_KEY: 'YOUR_PUBLIC_KEY', // Ersetzen Sie dies mit Ihrer EmailJS Public Key
+                SERVICE_ID: 'YOUR_SERVICE_ID', // Ersetzen Sie dies mit Ihrer EmailJS Service ID
+                TEMPLATE_ID: 'YOUR_TEMPLATE_ID' // Ersetzen Sie dies mit Ihrer EmailJS Template ID
+            };
+
+            // Initialize EmailJS
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+                
+                // Prepare email parameters
+                const emailParams = {
+                    to_email: 'info@baederbook.de',
+                    from_name: data.name,
+                    from_email: data.email,
+                    subject: data.subject,
+                    message: data.message,
+                    reply_to: data.email
+                };
+
+                // Show loading state
+                const submitBtn = contactForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Wird gesendet...';
+                submitBtn.disabled = true;
+
+                // Send email via EmailJS
+                emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.TEMPLATE_ID,
+                    emailParams
+                )
+                .then(function(response) {
+                    console.log('Email sent successfully!', response.status, response.text);
+                    alert('Vielen Dank für Ihre Nachricht! Wir melden uns in Kürze bei Ihnen.');
+                    closeModal();
+                    contactForm.reset();
+                }, function(error) {
+                    console.error('Email sending failed:', error);
+                    alert('Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns direkt unter info@baederbook.de');
+                })
+                .finally(function() {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                });
+            } else {
+                // Fallback: Use mailto if EmailJS is not loaded
+                const mailtoLink = `mailto:info@baederbook.de?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(`Name: ${data.name}\nE-Mail: ${data.email}\n\nNachricht:\n${data.message}`)}`;
+                window.location.href = mailtoLink;
+                alert('Ihr E-Mail-Client wird geöffnet. Falls nicht, senden Sie bitte eine E-Mail an info@baederbook.de');
+                closeModal();
+                contactForm.reset();
+            }
         });
     }
 }
