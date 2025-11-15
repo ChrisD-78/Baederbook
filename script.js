@@ -710,6 +710,28 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeSupportModal();
     initializeAboutModal();
     initializeCookieModal();
+    
+    // Check for hash in URL and open corresponding modal
+    const hash = window.location.hash;
+    if (hash === '#support') {
+        const supportModal = document.getElementById('supportModal');
+        const supportLink = document.getElementById('supportLink');
+        if (supportModal && supportLink) {
+            setTimeout(() => {
+                supportModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }, 300);
+        }
+    } else if (hash === '#contact') {
+        const contactModal = document.getElementById('contactModal');
+        const contactLink = document.getElementById('contactLink');
+        if (contactModal && contactLink) {
+            setTimeout(() => {
+                contactModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }, 300);
+        }
+    }
 });
 
 console.log('🌊 Bäderbook - Digital Solutions initialized');
